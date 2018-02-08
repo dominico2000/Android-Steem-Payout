@@ -20,18 +20,22 @@ class AccountsViewAdapter( val list: ArrayList<AccountsData> ):RecyclerView.Adap
         holder.bindItems(list[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AccountsViewAdapter.ViewHolder{
-        val v = LayoutInflater.from(parent?.context).inflate(R.layout.account_card, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountsViewAdapter.ViewHolder{
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.account_card, parent, false)
         return ViewHolder(v)
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bindItems(data: AccountsData) {
             val nameText: TextView = itemView.findViewById(R.id.name_text)
-            val sbdText: TextView = itemView.findViewById(R.id.sbd_text)
+            val sbdText: TextView = itemView.findViewById(R.id.sbd_value)
+            val spText: TextView = itemView.findViewById(R.id.sp_value)
+            //aTODO("Add last_sync_date_text")
 
             nameText.text = data.name
             sbdText.text = data.SBD.toString() + " SBD"
+            spText.text = data.SP.toString() + " SP"
+
 
         }
 

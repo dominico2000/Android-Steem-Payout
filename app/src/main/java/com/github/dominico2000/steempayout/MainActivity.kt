@@ -1,12 +1,16 @@
 package com.github.dominico2000.steempayout
 
+import android.content.Context
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -23,8 +27,16 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        accountsView.visibility = View.GONE
-        accountsView.layoutManager = LinearLayoutManager(this)
+        //accounts_view.visibility = View.GONE
+        accounts_view.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+
+        val items = ArrayList<AccountsData>()
+        items.add(AccountsData("@dominico2000",10200, 30.02.toFloat(), 15.0.toFloat()))
+        items.add(AccountsData("@foxsil",20100, 20.6.toFloat(), 3.0.toFloat()))
+
+        val adapter = AccountsViewAdapter(items)
+        accounts_view.adapter = adapter
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

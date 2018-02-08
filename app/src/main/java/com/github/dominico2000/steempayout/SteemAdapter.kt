@@ -4,6 +4,7 @@ import eu.bittrade.libs.steemj.SteemJ
 import eu.bittrade.libs.steemj.apis.follow.model.CommentBlogEntry
 import eu.bittrade.libs.steemj.base.models.AccountName
 import eu.bittrade.libs.steemj.enums.RewardFundType
+import java.lang.reflect.Array
 
 
 class SteemAdapter constructor(val accountName: AccountName) {
@@ -37,5 +38,19 @@ class SteemAdapter constructor(val accountName: AccountName) {
         }
         return payout
     }
-        
+
+
+    fun reward5050(totalPostReward: Float): List<Float> {
+        var reward = totalPostReward * 0.8
+        var sbd = (reward*0.5).toFloat()
+        var sp = (reward*0.5).toFloat()
+        return listOf(sbd, sp)
+    }
+
+    fun reward100sp(totalPostReward: Float): List<Float> {
+        var reward = totalPostReward * 0.8
+        var sbd = 0.toFloat()
+        var sp = reward.toFloat()
+        return listOf(sbd, sp)
+    }
 }

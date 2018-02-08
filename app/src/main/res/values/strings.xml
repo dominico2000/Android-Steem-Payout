@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Steem Payout</string>
     <string name="action_settings">Settings</string>
+    <string name="last_7_days_potential_posts_payout">Last 7 days potential posts payout</string>
+    <string name="steemdolar">SBD :</string>
+    <string name="steempower">SP :</string>
 </resources>
