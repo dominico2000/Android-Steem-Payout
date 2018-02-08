@@ -38,7 +38,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="2018-02-07 15:26"
+                    android:text="2018-02-07 15:14"
                     android:textColor="@android:color/darker_gray" />
 
             </LinearLayout>
@@ -46,6 +46,7 @@
             <TextView
                 android:layout_width="239dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="@string/last_7_days_potential_posts_payout" />
 
 

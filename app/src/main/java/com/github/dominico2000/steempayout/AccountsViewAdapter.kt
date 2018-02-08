@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -30,11 +32,14 @@ class AccountsViewAdapter( val list: ArrayList<AccountsData> ):RecyclerView.Adap
             val nameText: TextView = itemView.findViewById(R.id.name_text)
             val sbdText: TextView = itemView.findViewById(R.id.sbd_value)
             val spText: TextView = itemView.findViewById(R.id.sp_value)
-            //aTODO("Add last_sync_date_text")
+            val lastSyncDateText: TextView = itemView.findViewById(R.id.last_sync_date_text)
 
             nameText.text = data.name
             sbdText.text = data.SBD.toString() + " SBD"
             spText.text = data.SP.toString() + " SP"
+
+            var lastSyncData: Date = Date(data.timestamp * 1000L)
+            lastSyncDateText.text = SimpleDateFormat("dd-MM-yyyy HH:mm").format(lastSyncData).toString()
 
 
         }

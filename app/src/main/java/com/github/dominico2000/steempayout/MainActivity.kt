@@ -23,16 +23,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            addNewAccount()
         }
 
         //accounts_view.visibility = View.GONE
         accounts_view.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
         val items = ArrayList<AccountsData>()
-        items.add(AccountsData("@dominico2000",10200, 30.02.toFloat(), 15.0.toFloat()))
-        items.add(AccountsData("@foxsil",20100, 20.6.toFloat(), 3.0.toFloat()))
+        items.add(AccountsData("@dominico2000",971442780, 30.02.toFloat(), 15.0.toFloat()))
+        items.add(AccountsData("@foxsil",1518426549, 20.6.toFloat(), 3.0.toFloat()))
 
         val adapter = AccountsViewAdapter(items)
         accounts_view.adapter = adapter
@@ -53,5 +52,9 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun addNewAccount(){
+
     }
 }
