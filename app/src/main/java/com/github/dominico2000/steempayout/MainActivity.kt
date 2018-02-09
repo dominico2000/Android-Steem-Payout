@@ -1,15 +1,16 @@
 package com.github.dominico2000.steempayout
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            addNewAccount()
+            addNewAccount(view)
         }
 
         //accounts_view.visibility = View.GONE
@@ -54,7 +55,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addNewAccount(){
+    fun addNewAccount(view: View){
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.add_new_account_dialog, null)
+        dialogBuilder.setView(dialogView)
 
+        val editText = dialogView.findViewById<View>(R.id.add_account_name_etext) as EditText
+
+        dialogBuilder.setTitle("Add new account")
+        dialogBuilder.setMessage("Enter account name")
+        dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { dialog, whichButton ->
+            //do something with edt.getText().toString();
+
+            var message = "Adding account " + editText.text
+            Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+
+        })
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, whichButton ->
+            //pass
+        })
+        val b = dialogBuilder.create()
+        b.show()
     }
 }
