@@ -1,31 +1,44 @@
 package com.github.dominico2000.steempayout
 
+import android.accounts.Account
 import android.content.Context
 import android.content.DialogInterface
+import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
+import com.fasterxml.jackson.databind.JsonSerializer
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.apache.commons.lang3.ObjectUtils
+
 
 class MainActivity : AppCompatActivity() {
+
+    private var db: AccountsDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        db = AccountsDatabase.getInstance(this)
+
         fab.setOnClickListener { view ->
             addNewAccount(view)
         }
+
+
 
         //accounts_view.visibility = View.GONE
         accounts_view.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
@@ -68,9 +81,26 @@ class MainActivity : AppCompatActivity() {
         dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { dialog, whichButton ->
             //do something with edt.getText().toString();
 
+            var account = Accounts()
+            account.name = editText.text.toString()
+            account.timestamp = System.currentTimeMillis()/1000L
+
+            class Worker: AsyncTask<Void, Void, List<Accounts>? >() {
+                override fun doInBackground(vararg p0: Void?): List<Accounts>? {
+                    db?.accountsDao()?.insertAccount(account)
+                    return db?.accountsDao()?.getAllAccounts()
+                }
+            }
+
+            var result = Worker().execute().get() as List<Accounts>
+
+            Log.d("Database: ", result[0].toString())
+
             var message = "Adding account " + editText.text
             Snackbar.make(view, message, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+
+
 
         })
         dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, whichButton ->

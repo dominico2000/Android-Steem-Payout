@@ -11,7 +11,7 @@ import android.arch.persistence.room.OnConflictStrategy.REPLACE
 @Dao
 interface AccountsDao {
 
-    @Query("select * from task")
+    @Query("select * from accounts")
     fun getAllAccounts(): List<Accounts>
 
     @Insert(onConflict = REPLACE)

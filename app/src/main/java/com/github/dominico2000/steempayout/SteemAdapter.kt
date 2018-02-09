@@ -4,7 +4,7 @@ import eu.bittrade.libs.steemj.SteemJ
 import eu.bittrade.libs.steemj.apis.follow.model.CommentBlogEntry
 import eu.bittrade.libs.steemj.base.models.AccountName
 import eu.bittrade.libs.steemj.enums.RewardFundType
-import java.lang.reflect.Array
+
 
 
 class SteemAdapter constructor(val accountName: AccountName) {
