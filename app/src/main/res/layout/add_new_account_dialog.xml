@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.design.widget.TextInputLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <EditText
@@ -8,8 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:contentDescription="Your Steeem account name"
-        android:hint="(e.g. @dominico2000)" />
+        android:contentDescription="@string/add_new_account_desc"
+        android:hint="@string/add_new_account_hint"
+        android:inputType="text"
+        android:singleLine="true" />
 
 
-</LinearLayout>
+</android.support.design.widget.TextInputLayout>

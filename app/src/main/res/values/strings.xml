@@ -4,4 +4,6 @@
     <string name="last_7_days_potential_posts_payout">Last 7 days potential posts payout</string>
     <string name="steemdolar">SBD :</string>
     <string name="steempower">SP :</string>
+    <string name="add_new_account_desc">Your Steeem account name</string>
+    <string name="add_new_account_hint">e.g. @dominico2000</string>
 </resources>
