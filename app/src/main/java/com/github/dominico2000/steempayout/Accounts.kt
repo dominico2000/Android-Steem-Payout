@@ -16,5 +16,6 @@ data class Accounts(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                     @ColumnInfo(name = "SP") var SP: Float) {
 
     constructor():this(0, "", 0, 0F, 0F)
+
 }
 

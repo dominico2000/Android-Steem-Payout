@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -27,6 +28,7 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
+
     var db: AccountsDatabase? = null
     var items: ArrayList<Accounts> = ArrayList()
 
@@ -37,8 +39,18 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         db = AccountsDatabase.getInstance(this)
-        var accountsOperation = AccoutsOperation(this, db, items)
 
+        class Worker: AsyncTask<Void, Void, List<Accounts>?>() {
+            override fun doInBackground(vararg p0: Void?): List<Accounts>? {
+                return db?.accountsDao()?.getAllAccounts()
+            }
+
+        }
+        val res = Worker().execute().get() as List<Accounts>
+        items.addAll(res)
+
+        Log.d("Db_START", res.toString())
+        Log.d("Items_START", items.toString())
 
         //accounts_view.visibility = View.GONE
         accounts_view.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
@@ -47,16 +59,16 @@ class MainActivity : AppCompatActivity() {
         //items.add(Accounts(0,"@dominico2000",971442780, 30.02.toFloat(), 15.0.toFloat()))
         //items.add(Accounts(0,"@foxsil",1518426549, 20.6.toFloat(), 3.0.toFloat()))
 
-        val adapter = AccountsViewAdapter(items, accountsOperation)
+        val adapter = AccountsViewAdapter(items,  accounts_view, db)
         accounts_view.adapter = adapter
 
-
+        TODO("Add refresh data")
 
         fab.setOnClickListener { view ->
-           accountsOperation.addNewAccount(view)
-
+           addNewAccount(view, adapter)
 
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -76,6 +88,55 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun addNewAccount(view: View, adapter: AccountsViewAdapter){
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = LayoutInflater.from(this)
+        val dialogView = inflater.inflate(R.layout.add_new_account_dialog, null)
+        dialogBuilder.setView(dialogView)
+
+        val editText = dialogView.findViewById<View>(R.id.add_account_name_etext) as EditText
+
+        dialogBuilder.setTitle("Add new account")
+        dialogBuilder.setMessage("Enter account name")
+        dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { dialog, whichButton ->
+            //do something with edt.getText().toString();
+
+            var account = Accounts()
+            account.name = editText.text.toString()
+            account.timestamp = System.currentTimeMillis()/1000L
+
+            items.add(account)
+            adapter.notifyDataSetChanged()
+            val res = addToDatabase(account)
+            items[items.size-1].id = res[res.size-1].id
+            Log.d("Db", res.toString())
+
+            var message = "Adding account " + editText.text
+            Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+
+
+
+        })
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, whichButton ->
+            //pass
+        })
+        val b = dialogBuilder.create()
+        b.show()
+    }
+
+    fun addToDatabase(account: Accounts):  List<Accounts>{
+        class Worker: AsyncTask<Void, Void, List<Accounts>?>() {
+            override fun doInBackground(vararg p0: Void?): List<Accounts>? {
+                db?.accountsDao()?.insertAccount(account)
+                db?.accountsDao()?.deleteAccount(account)
+                return db?.accountsDao()?.getAllAccounts()
+            }
+
+        }
+        return Worker().execute().get() as List<Accounts>
+
+    }
 
 
 

@@ -15,7 +15,7 @@ import java.util.*
 /**
  * Created by dominik on 02.02.18.
  */
-class AccountsViewAdapter( val list: ArrayList<Accounts>, val accountsOperation: AccoutsOperation):RecyclerView.Adapter<AccountsViewAdapter.ViewHolder>()  {
+class AccountsViewAdapter( val list: ArrayList<Accounts>, val recycler: RecyclerView, var db: AccountsDatabase?):RecyclerView.Adapter<AccountsViewAdapter.ViewHolder>()  {
 
 
 
@@ -34,15 +34,29 @@ class AccountsViewAdapter( val list: ArrayList<Accounts>, val accountsOperation:
 
         holder.mRemoveButton.setOnClickListener { view ->
 
-            var result = accountsOperation.removeAccount(list[position])
-            accountsOperation.updateCardsFromDatabase()
-            Log.d("Remove",list[position].toString())
-            Log.d("Database_State", result.toString())
+            val res = deleteFromDatabase(list[position])
+            Log.d("Db", res.toString())
+            list.removeAt(position)
+            recycler.removeViewAt(position)
+            this.notifyItemRemoved(position)
+            this.notifyItemRangeChanged(position, list.size)
 
 
 
         }
 
+    }
+
+    fun deleteFromDatabase(account: Accounts):  List<Accounts>? {
+        class Worker : AsyncTask<Void, Void, List<Accounts>?>() {
+            override fun doInBackground(vararg p0: Void?): List<Accounts>? {
+                db?.accountsDao()?.deleteAccount(account)
+
+                return db?.accountsDao()?.getAllAccounts()
+            }
+
+        }
+        return Worker().execute().get()
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {

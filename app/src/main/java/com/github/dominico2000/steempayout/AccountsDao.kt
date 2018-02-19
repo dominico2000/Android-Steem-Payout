@@ -11,7 +11,7 @@ import android.arch.persistence.room.OnConflictStrategy.REPLACE
 @Dao
 interface AccountsDao {
 
-    @Query("select * from accounts")
+    @Query("SELECT * FROM accounts")
     fun getAllAccounts(): List<Accounts>
 
     @Insert(onConflict = REPLACE)
@@ -22,8 +22,6 @@ interface AccountsDao {
 
     @Delete
     fun deleteAccount(account: Accounts)
-    /*@Query("DELETE FROM accounts WHERE id = :arg0")
-    fun deleteAccount(accountId: Long)*/
 
 
 }

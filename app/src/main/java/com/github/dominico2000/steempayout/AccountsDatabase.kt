@@ -20,8 +20,11 @@ abstract class AccountsDatabase: RoomDatabase() {
         fun getInstance(context: Context): AccountsDatabase? {
             if (INSTANCE == null) {
                 synchronized(AccountsDatabase::class) {
-                    INSTANCE = Room.inMemoryDatabaseBuilder(context.getApplicationContext(),
+                    /*INSTANCE = Room.inMemoryDatabaseBuilder(context.applicationContext,
                             AccountsDatabase::class.java/*, "steem_accounts.db"*/)
+                            .build()*/
+                    INSTANCE = Room.databaseBuilder(context.applicationContext,
+                            AccountsDatabase::class.java, "steem_accounts.db")
                             .build()
                 }
             }
