@@ -21,11 +21,15 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.apache.commons.lang3.ObjectUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var db: AccountsDatabase? = null
+    var db: AccountsDatabase? = null
+    var items: ArrayList<Accounts> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,23 +37,26 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         db = AccountsDatabase.getInstance(this)
-
-        fab.setOnClickListener { view ->
-            addNewAccount(view)
-        }
-
+        var accountsOperation = AccoutsOperation(this, db, items)
 
 
         //accounts_view.visibility = View.GONE
         accounts_view.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
-        val items = ArrayList<AccountsData>()
-        items.add(AccountsData("@dominico2000",971442780, 30.02.toFloat(), 15.0.toFloat()))
-        items.add(AccountsData("@foxsil",1518426549, 20.6.toFloat(), 3.0.toFloat()))
 
-        val adapter = AccountsViewAdapter(items)
+        //items.add(Accounts(0,"@dominico2000",971442780, 30.02.toFloat(), 15.0.toFloat()))
+        //items.add(Accounts(0,"@foxsil",1518426549, 20.6.toFloat(), 3.0.toFloat()))
+
+        val adapter = AccountsViewAdapter(items, accountsOperation)
         accounts_view.adapter = adapter
 
+
+
+        fab.setOnClickListener { view ->
+           accountsOperation.addNewAccount(view)
+
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -68,45 +75,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addNewAccount(view: View){
-        val dialogBuilder = AlertDialog.Builder(this)
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.add_new_account_dialog, null)
-        dialogBuilder.setView(dialogView)
-
-        val editText = dialogView.findViewById<View>(R.id.add_account_name_etext) as EditText
-
-        dialogBuilder.setTitle("Add new account")
-        dialogBuilder.setMessage("Enter account name")
-        dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { dialog, whichButton ->
-            //do something with edt.getText().toString();
-
-            var account = Accounts()
-            account.name = editText.text.toString()
-            account.timestamp = System.currentTimeMillis()/1000L
-
-            class Worker: AsyncTask<Void, Void, List<Accounts>? >() {
-                override fun doInBackground(vararg p0: Void?): List<Accounts>? {
-                    db?.accountsDao()?.insertAccount(account)
-                    return db?.accountsDao()?.getAllAccounts()
-                }
-            }
-
-            var result = Worker().execute().get() as List<Accounts>
-
-            Log.d("Database: ", result[0].toString())
-
-            var message = "Adding account " + editText.text
-            Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
 
 
 
-        })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, whichButton ->
-            //pass
-        })
-        val b = dialogBuilder.create()
-        b.show()
-    }
+
 }

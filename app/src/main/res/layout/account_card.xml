@@ -33,13 +33,14 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/last_sync_date_text"
-                    android:layout_width="0dp"
+                <ImageButton
+                    android:id="@+id/account_delete_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2018-02-07 15:14"
-                    android:textColor="@android:color/darker_gray" />
+                    android:src="@drawable/ic_delete_black_24dp"
+                    android:background="@color/cardview_light_background"
+                    android:tint="@color/account_delete_button_color"/>
+
 
             </LinearLayout>
 
@@ -88,7 +89,17 @@
                     android:text="1000 SP"
                     android:textAlignment="center" />
 
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/last_sync_date_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"
+                android:text="2018-02-07 15:14"
+                android:textColor="@android:color/darker_gray" />
 
         </LinearLayout>
 

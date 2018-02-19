@@ -22,6 +22,8 @@ interface AccountsDao {
 
     @Delete
     fun deleteAccount(account: Accounts)
+    /*@Query("DELETE FROM accounts WHERE id = :arg0")
+    fun deleteAccount(accountId: Long)*/
 
 
 }
