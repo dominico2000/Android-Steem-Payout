@@ -8,14 +8,16 @@ import android.arch.persistence.room.PrimaryKey
 /**
  * Created by dominik on 09.02.18.
  */
+
 @Entity(tableName = "accounts")
 data class Accounts(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                     @ColumnInfo(name = "name") var name: String,
                     @ColumnInfo(name = "timestamp") var timestamp: Long,
                     @ColumnInfo(name = "SBD") var SBD: Float,
-                    @ColumnInfo(name = "SP") var SP: Float) {
+                    @ColumnInfo(name = "SP") var SP: Float,
+                    @ColumnInfo(name = "rewardType") var rewardType: Int){
 
-    constructor():this(0, "", 0, 0F, 0F)
+    constructor():this(0, "", 0, 0F, 0F, 5050)
 
 }
 

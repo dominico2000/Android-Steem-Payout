@@ -15,5 +15,29 @@
         android:inputType="text"
         android:singleLine="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reward mode"
+        android:layout_margin="5dp"/>
+
+    <RadioGroup
+        android:id="@+id/reward_type_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
+        <RadioButton
+            android:id="@+id/ff_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50%/50%"/>
+        <RadioButton
+            android:id="@+id/full_sp_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100SP"/>
+    </RadioGroup>
+
 
 </android.support.design.widget.TextInputLayout>

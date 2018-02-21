@@ -64,18 +64,22 @@ class AccountsViewAdapter( val list: ArrayList<Accounts>, val recycler: Recycler
         val mRemoveButton: ImageButton = view.findViewById(R.id.account_delete_button)
 
         fun bindItems(data: Accounts) {
-            val nameText: TextView = itemView.findViewById(R.id.name_text)
-            val sbdText: TextView = itemView.findViewById(R.id.sbd_value)
-            val spText: TextView = itemView.findViewById(R.id.sp_value)
-            val lastSyncDateText: TextView = itemView.findViewById(R.id.last_sync_date_text)
+            val mNameText: TextView = itemView.findViewById(R.id.name_text)
+            val mSbdText: TextView = itemView.findViewById(R.id.sbd_value)
+            val mSpText: TextView = itemView.findViewById(R.id.sp_value)
+            val mLastSyncDateText: TextView = itemView.findViewById(R.id.last_sync_date_text)
+            val mRewardTypeText: TextView = itemView.findViewById(R.id.reward_type_text)
 
-            nameText.text = data.name
-            sbdText.text = data.SBD.toString() + " SBD"
-            spText.text = data.SP.toString() + " SP"
+            mNameText.text = data.name
+            mSbdText.text = data.SBD.toString() + " SBD"
+            mSpText.text = data.SP.toString() + " SP"
 
             var lastSyncData: Date = Date(data.timestamp * 1000L)
-            lastSyncDateText.text = SimpleDateFormat("dd-MM-yyyy HH:mm").format(lastSyncData).toString()
+            mLastSyncDateText.text = SimpleDateFormat("dd-MM-yyyy HH:mm").format(lastSyncData).toString()
 
+            if(data.rewardType == 5050) mRewardTypeText.text = "50/50"
+            else if(data.rewardType == 100) mRewardTypeText.text = "100SP"
+            else mRewardTypeText.text = "N/D"
 
         }
 

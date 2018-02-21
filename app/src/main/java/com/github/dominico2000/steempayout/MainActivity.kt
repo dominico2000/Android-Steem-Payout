@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.RadioGroup
 import com.fasterxml.jackson.databind.JsonSerializer
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = AccountsViewAdapter(items,  accounts_view, db)
         accounts_view.adapter = adapter
 
-        TODO("Add refresh data")
+        //TODO: Add refresh data
 
         fab.setOnClickListener { view ->
            addNewAccount(view, adapter)
@@ -94,27 +95,36 @@ class MainActivity : AppCompatActivity() {
         val dialogView = inflater.inflate(R.layout.add_new_account_dialog, null)
         dialogBuilder.setView(dialogView)
 
-        val editText = dialogView.findViewById<View>(R.id.add_account_name_etext) as EditText
+        val mEditText = dialogView.findViewById<View>(R.id.add_account_name_etext) as EditText
+        val mRadioGroup = dialogView.findViewById<View>(R.id.reward_type_radio_group) as RadioGroup
+
+        mRadioGroup.check(R.id.ff_reward)
 
         dialogBuilder.setTitle("Add new account")
-        dialogBuilder.setMessage("Enter account name")
+        //dialogBuilder.setMessage("Enter account name")
         dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { dialog, whichButton ->
             //do something with edt.getText().toString();
 
+
+
             var account = Accounts()
-            account.name = editText.text.toString()
+            account.name = mEditText.text.toString()
             account.timestamp = System.currentTimeMillis()/1000L
+
+            if( mRadioGroup.checkedRadioButtonId == R.id.ff_reward ) account.rewardType = 5050
+            else if( mRadioGroup. checkedRadioButtonId == R.id.full_sp_reward ) account.rewardType = 100
+            else snackbar(view, "You must choose reward type")
+
+            if(account.name[0] != '@') account.name = "@" + (account.name)
 
             items.add(account)
             adapter.notifyDataSetChanged()
             val res = addToDatabase(account)
-            items[items.size-1].id = res[res.size-1].id
+            items[items.size - 1].id = res[res.size - 1].id
             Log.d("Db", res.toString())
 
-            var message = "Adding account " + editText.text
-            Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-
+            var message = "Adding account " + mEditText.text
+            snackbar(view, message)
 
 
         })
@@ -137,6 +147,14 @@ class MainActivity : AppCompatActivity() {
         return Worker().execute().get() as List<Accounts>
 
     }
+
+    fun snackbar(view: View, message: String){
+
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+    }
+
+
 
 
 
