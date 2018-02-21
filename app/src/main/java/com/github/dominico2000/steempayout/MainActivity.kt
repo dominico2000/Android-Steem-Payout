@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         //items.add(Accounts(0,"@dominico2000",971442780, 30.02.toFloat(), 15.0.toFloat()))
         //items.add(Accounts(0,"@foxsil",1518426549, 20.6.toFloat(), 3.0.toFloat()))
 
-        val adapter = AccountsViewAdapter(items,  accounts_view, db)
+        val adapter = AccountsViewAdapter(this, items,  accounts_view, db)
         accounts_view.adapter = adapter
 
         //TODO: Add refresh data
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
         dialogBuilder.setTitle("Add new account")
         //dialogBuilder.setMessage("Enter account name")
-        dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { dialog, whichButton ->
+        dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { _, _->
             //do something with edt.getText().toString();
 
 
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
 
 
         })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, whichButton ->
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
             //pass
         })
         val b = dialogBuilder.create()

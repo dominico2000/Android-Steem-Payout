@@ -6,4 +6,6 @@
     <string name="steempower">SP :</string>
     <string name="add_new_account_desc">Your Steeem account name</string>
     <string name="add_new_account_hint">e.g. @dominico2000</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

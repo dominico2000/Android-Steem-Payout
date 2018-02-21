@@ -1,5 +1,8 @@
 package com.github.dominico2000.steempayout
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.os.AsyncTask
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -15,7 +18,7 @@ import java.util.*
 /**
  * Created by dominik on 02.02.18.
  */
-class AccountsViewAdapter( val list: ArrayList<Accounts>, val recycler: RecyclerView, var db: AccountsDatabase?):RecyclerView.Adapter<AccountsViewAdapter.ViewHolder>()  {
+class AccountsViewAdapter( val context: Context, val list: ArrayList<Accounts>, val recycler: RecyclerView, var db: AccountsDatabase?):RecyclerView.Adapter<AccountsViewAdapter.ViewHolder>()  {
 
 
 
@@ -34,12 +37,25 @@ class AccountsViewAdapter( val list: ArrayList<Accounts>, val recycler: Recycler
 
         holder.mRemoveButton.setOnClickListener { view ->
 
-            val res = deleteFromDatabase(list[position])
-            Log.d("Db", res.toString())
-            list.removeAt(position)
-            recycler.removeViewAt(position)
-            this.notifyItemRemoved(position)
-            this.notifyItemRangeChanged(position, list.size)
+            val removeDialogBuilder = AlertDialog.Builder(context)
+            removeDialogBuilder.setMessage("Are you shure to remove account " + list[position].name)
+                    .setTitle("Remove account")
+
+            removeDialogBuilder.setPositiveButton(R.string.yes, DialogInterface.OnClickListener { _, _ ->
+                val res = deleteFromDatabase(list[position])
+                Log.d("Db", res.toString())
+                list.removeAt(position)
+                recycler.removeViewAt(position)
+                this.notifyItemRemoved(position)
+                this.notifyItemRangeChanged(position, list.size)
+            })
+            removeDialogBuilder.setNegativeButton(R.string.no, DialogInterface.OnClickListener{ _, _ ->
+                //pass
+            })
+
+           removeDialogBuilder.create().show()
+
+
 
 
 
