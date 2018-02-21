@@ -1,5 +1,6 @@
 package com.github.dominico2000.steempayout
 
+import android.util.Log
 import eu.bittrade.libs.steemj.SteemJ
 import eu.bittrade.libs.steemj.apis.follow.model.CommentBlogEntry
 import eu.bittrade.libs.steemj.base.models.AccountName
@@ -15,6 +16,9 @@ class SteemAdapter constructor(private val accountName: AccountName) {
 
         val steemJ = SteemJ()
 
+
+        Log.d("Steem Ticker",  steemJ.ticker.toString())
+
         val rewardFund = steemJ.getRewardFund(RewardFundType.POST)
         val rewardBalance = rewardFund.rewardBalance.amount;
         val recentClaims = rewardFund.recentClaims;
@@ -27,14 +31,14 @@ class SteemAdapter constructor(private val accountName: AccountName) {
         do{
             postsLimit += 10
             aa = steemJ.getBlog(accountName, 0, postsLimit.toShort() )
-            val aaSize = aa.size
-            val lastPostRshares = aa[aaSize-1].comment.voteRshares
+
+            val lastPostRshares = aa[aa.size - 1].comment.voteRshares
         }while(lastPostRshares > 0)
 
 
         var payout = 0.toFloat()
         for (a in aa) {
-             payout = a.comment.voteRshares.toFloat() * foundPerShare * base / correctionDivider
+             payout += a.comment.voteRshares.toFloat() * foundPerShare * base / correctionDivider
         }
         return payout
     }

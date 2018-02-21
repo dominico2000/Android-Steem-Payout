@@ -83,8 +83,8 @@ class AccountsViewAdapter( private val context: Context, private val list: Array
             val mRewardTypeText: TextView = itemView.findViewById(R.id.reward_type_text)
 
             mNameText.text = data.name
-            mSbdText.text = data.SBD.toString() + " SBD"
-            mSpText.text = data.SP.toString() + " SP"
+            mSbdText.text = ("%.2f").format(data.SBD) + " SBD"
+            mSpText.text = ("%.2f").format(data.SP) + " SP"
 
             var lastSyncData: Date = Date(data.timestamp * 1000L)
             mLastSyncDateText.text = SimpleDateFormat("dd-MM-yyyy HH:mm").format(lastSyncData).toString()

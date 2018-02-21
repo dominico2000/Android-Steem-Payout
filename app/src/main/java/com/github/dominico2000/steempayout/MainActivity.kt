@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioGroup
+import eu.bittrade.libs.steemj.base.models.AccountName
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -29,12 +31,17 @@ class MainActivity : AppCompatActivity() {
     var items: ArrayList<Accounts> = ArrayList()
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+
         db = AccountsDatabase.getInstance(this)
+
+        var mAccountsRefresh = accounts_refresh
+
 
         class Worker: AsyncTask<Void, Void, List<Accounts>?>() {
             override fun doInBackground(vararg p0: Void?): List<Accounts>? {
@@ -61,9 +68,15 @@ class MainActivity : AppCompatActivity() {
         //TODO: Add refresh data
 
         fab.setOnClickListener { view ->
-           addNewAccount(view, adapter)
+           addNewAccount(view, adapter, mAccountsRefresh)
+
 
         }
+
+        mAccountsRefresh.setColorSchemeResources(R.color.swipe_orange, R.color.swipe_green, R.color.swipe_blue)
+        mAccountsRefresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            refresh(adapter, mAccountsRefresh)
+        })
 
     }
 
@@ -84,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun addNewAccount(view: View, adapter: AccountsViewAdapter){
+    fun addNewAccount(view: View, adapter: AccountsViewAdapter, mAccountsRefresh: SwipeRefreshLayout){
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
         val dialogView = inflater.inflate(R.layout.add_new_account_dialog, null)
@@ -121,6 +134,12 @@ class MainActivity : AppCompatActivity() {
             var message = getString(R.string.adding_account_message) + mEditText.text
             snackbar(view, message)
 
+            mAccountsRefresh.post(Runnable {
+                mAccountsRefresh.isRefreshing = true
+                refresh(adapter, mAccountsRefresh)
+            })
+
+
 
         })
         dialogBuilder.setNegativeButton(getString(R.string.cancel), DialogInterface.OnClickListener { _, _ ->
@@ -134,12 +153,54 @@ class MainActivity : AppCompatActivity() {
         class Worker: AsyncTask<Void, Void, List<Accounts>?>() {
             override fun doInBackground(vararg p0: Void?): List<Accounts>? {
                 db?.accountsDao()?.insertAccount(account)
-                db?.accountsDao()?.deleteAccount(account)
                 return db?.accountsDao()?.getAllAccounts()
             }
 
         }
         return Worker().execute().get() as List<Accounts>
+
+    }
+
+    fun refresh(adapter: AccountsViewAdapter, mAccountsRefresh: SwipeRefreshLayout){
+
+        class Worker: AsyncTask<SwipeRefreshLayout,Void,Unit>() {
+
+
+
+            override fun onPostExecute(result: Unit?) {
+                super.onPostExecute(result)
+                adapter.notifyDataSetChanged()
+                mAccountsRefresh.isRefreshing = false
+
+            }
+
+            override fun doInBackground(vararg p0: SwipeRefreshLayout?){
+
+                for( item in items ){
+                    val name = item.name.removePrefix("@")
+                    Log.d("Name",name)
+                    val steemAccount = SteemAdapter(AccountName(name))
+                    var payout = steemAccount.getPostsPotencialReward()
+                    Log.d("Steem", payout.toString())
+                    var reward: List<Float>
+                    if(item.rewardType == 5050) reward = steemAccount.reward5050(payout)
+                    else if(item.rewardType == 100) reward = steemAccount.reward100sp(payout)
+                    else reward = listOf(-1F,-1F)
+
+                    item.SBD = reward[0]
+                    item.SP = reward[1]
+
+                    db?.accountsDao()?.updateAccount(item)
+                    Log.d("Db",db?.accountsDao()?.getAllAccounts().toString())
+
+                }
+
+
+            }
+        }
+
+        Worker().execute()
+
 
     }
 

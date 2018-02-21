@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="account_delete_button_color">#808080</color>
+    <color name="swipe_orange">#FF9900</color>
+    <color name="swipe_green">#009900</color>
+    <color name="swipe_blue">#000099</color>
 </resources>
