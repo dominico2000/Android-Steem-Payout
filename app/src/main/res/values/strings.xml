@@ -8,4 +8,14 @@
     <string name="add_new_account_hint">e.g. @dominico2000</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="remove_account_dialog_message">Are you shure to remove account</string>
+    <string name="remove_account_dialog_title">Remove account</string>
+    <string name="add_new_account_dialog_title">Add new account</string>
+    <string name="choose_reward_type_message">You must choose reward type</string>
+    <string name="adding_account_message">Adding account</string>
+    <string name="no_data_shortcut">N/D</string>
+
+
 </resources>

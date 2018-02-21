@@ -7,7 +7,7 @@ import eu.bittrade.libs.steemj.enums.RewardFundType
 
 
 
-class SteemAdapter constructor(val accountName: AccountName) {
+class SteemAdapter constructor(private val accountName: AccountName) {
 
 
 

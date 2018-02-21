@@ -18,7 +18,7 @@ import java.util.*
 /**
  * Created by dominik on 02.02.18.
  */
-class AccountsViewAdapter( val context: Context, val list: ArrayList<Accounts>, val recycler: RecyclerView, var db: AccountsDatabase?):RecyclerView.Adapter<AccountsViewAdapter.ViewHolder>()  {
+class AccountsViewAdapter( private val context: Context, private val list: ArrayList<Accounts>, private val recycler: RecyclerView, var db: AccountsDatabase?):RecyclerView.Adapter<AccountsViewAdapter.ViewHolder>()  {
 
 
 
@@ -29,7 +29,7 @@ class AccountsViewAdapter( val context: Context, val list: ArrayList<Accounts>, 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountsViewAdapter.ViewHolder{
         val v = LayoutInflater.from(parent.context).inflate(R.layout.account_card, parent, false)
-        return ViewHolder(v)
+        return ViewHolder(v, context)
     }
 
     override fun onBindViewHolder(holder: AccountsViewAdapter.ViewHolder, position: Int) {
@@ -38,8 +38,8 @@ class AccountsViewAdapter( val context: Context, val list: ArrayList<Accounts>, 
         holder.mRemoveButton.setOnClickListener { view ->
 
             val removeDialogBuilder = AlertDialog.Builder(context)
-            removeDialogBuilder.setMessage("Are you shure to remove account " + list[position].name)
-                    .setTitle("Remove account")
+            removeDialogBuilder.setMessage(context.getString(R.string.remove_account_dialog_message) + list[position].name)
+                    .setTitle(context.getString(R.string.remove_account_dialog_title))
 
             removeDialogBuilder.setPositiveButton(R.string.yes, DialogInterface.OnClickListener { _, _ ->
                 val res = deleteFromDatabase(list[position])
@@ -54,10 +54,6 @@ class AccountsViewAdapter( val context: Context, val list: ArrayList<Accounts>, 
             })
 
            removeDialogBuilder.create().show()
-
-
-
-
 
         }
 
@@ -75,7 +71,7 @@ class AccountsViewAdapter( val context: Context, val list: ArrayList<Accounts>, 
         return Worker().execute().get()
     }
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, private val context: Context): RecyclerView.ViewHolder(view) {
 
         val mRemoveButton: ImageButton = view.findViewById(R.id.account_delete_button)
 
@@ -95,7 +91,7 @@ class AccountsViewAdapter( val context: Context, val list: ArrayList<Accounts>, 
 
             if(data.rewardType == 5050) mRewardTypeText.text = "50/50"
             else if(data.rewardType == 100) mRewardTypeText.text = "100SP"
-            else mRewardTypeText.text = "N/D"
+            else mRewardTypeText.text = context.getString(R.string.no_data_shortcut)
 
         }
 

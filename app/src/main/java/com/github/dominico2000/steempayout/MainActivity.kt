@@ -1,11 +1,9 @@
 package com.github.dominico2000.steempayout
 
-import android.accounts.Account
-import android.content.Context
+
 import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -18,12 +16,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioGroup
-import com.fasterxml.jackson.databind.JsonSerializer
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.apache.commons.lang3.ObjectUtils
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -100,9 +95,9 @@ class MainActivity : AppCompatActivity() {
 
         mRadioGroup.check(R.id.ff_reward)
 
-        dialogBuilder.setTitle("Add new account")
+        dialogBuilder.setTitle(getString(R.string.add_new_account_dialog_title))
         //dialogBuilder.setMessage("Enter account name")
-        dialogBuilder.setPositiveButton("Add", DialogInterface.OnClickListener { _, _->
+        dialogBuilder.setPositiveButton(getString(R.string.add), DialogInterface.OnClickListener { _, _->
             //do something with edt.getText().toString();
 
 
@@ -113,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
             if( mRadioGroup.checkedRadioButtonId == R.id.ff_reward ) account.rewardType = 5050
             else if( mRadioGroup. checkedRadioButtonId == R.id.full_sp_reward ) account.rewardType = 100
-            else snackbar(view, "You must choose reward type")
+            else snackbar(view, getString(R.string.choose_reward_type_message))
 
             if(account.name[0] != '@') account.name = "@" + (account.name)
 
@@ -123,16 +118,16 @@ class MainActivity : AppCompatActivity() {
             items[items.size - 1].id = res[res.size - 1].id
             Log.d("Db", res.toString())
 
-            var message = "Adding account " + mEditText.text
+            var message = getString(R.string.adding_account_message) + mEditText.text
             snackbar(view, message)
 
 
         })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
+        dialogBuilder.setNegativeButton(getString(R.string.cancel), DialogInterface.OnClickListener { _, _ ->
             //pass
         })
-        val b = dialogBuilder.create()
-        b.show()
+        dialogBuilder.create().show()
+
     }
 
     fun addToDatabase(account: Accounts):  List<Accounts>{
