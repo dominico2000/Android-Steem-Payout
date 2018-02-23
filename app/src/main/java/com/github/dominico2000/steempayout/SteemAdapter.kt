@@ -32,6 +32,8 @@ class SteemAdapter constructor(private val accountName: AccountName) {
             postsLimit += 10
             aa = steemJ.getBlog(accountName, 0, postsLimit.toShort() )
 
+            if( aa.isEmpty() ) return 0F
+
             val lastPostRshares = aa[aa.size - 1].comment.voteRshares
         }while(lastPostRshares > 0)
 

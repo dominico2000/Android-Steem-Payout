@@ -1,6 +1,7 @@
 package com.github.dominico2000.steempayout
 
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
@@ -22,6 +23,13 @@ import eu.bittrade.libs.steemj.base.models.AccountName
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlin.collections.ArrayList
+import android.net.ConnectivityManager
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.NetworkInfo
+
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -176,30 +184,38 @@ class MainActivity : AppCompatActivity() {
 
             override fun doInBackground(vararg p0: SwipeRefreshLayout?){
 
-                for( item in items ){
-                    val name = item.name.removePrefix("@")
-                    Log.d("Name",name)
-                    val steemAccount = SteemAdapter(AccountName(name))
-                    var payout = steemAccount.getPostsPotencialReward()
-                    Log.d("Steem", payout.toString())
-                    var reward: List<Float>
-                    if(item.rewardType == 5050) reward = steemAccount.reward5050(payout)
-                    else if(item.rewardType == 100) reward = steemAccount.reward100sp(payout)
-                    else reward = listOf(-1F,-1F)
+                if( CheckNetwork(applicationContext) ) {
+                    for (item in items) {
+                        val name = item.name.removePrefix("@")
+                        Log.d("Name", name)
 
-                    item.SBD = reward[0]
-                    item.SP = reward[1]
+                        if( name.length in 3..16) {
+                            val steemAccount = SteemAdapter(AccountName(name))
+                            var payout = steemAccount.getPostsPotencialReward()
+                            Log.d("Steem", payout.toString())
+                            var reward: List<Float>
+                            if (item.rewardType == 5050) reward = steemAccount.reward5050(payout)
+                            else if (item.rewardType == 100) reward = steemAccount.reward100sp(payout)
+                            else reward = listOf(-1F, -1F)
 
-                    db?.accountsDao()?.updateAccount(item)
-                    Log.d("Db",db?.accountsDao()?.getAllAccounts().toString())
+                            item.SBD = reward[0]
+                            item.SP = reward[1]
 
+                            db?.accountsDao()?.updateAccount(item)
+                            Log.d("Db", db?.accountsDao()?.getAllAccounts().toString())
+                        }
+
+                    }
                 }
 
 
             }
         }
 
+
         Worker().execute()
+
+
 
 
     }
@@ -208,6 +224,17 @@ class MainActivity : AppCompatActivity() {
 
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+    }
+
+    fun CheckNetwork(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        if (activeNetwork != null && activeNetwork.isConnected) {
+            val networkType = activeNetwork.type
+            return networkType == ConnectivityManager.TYPE_WIFI || networkType == ConnectivityManager.TYPE_MOBILE
+        } else {
+            return false
+        }
     }
 
 
