@@ -16,6 +16,7 @@
     <string name="choose_reward_type_message">You must choose reward type</string>
     <string name="adding_account_message">Adding account</string>
     <string name="no_data_shortcut">N/D</string>
+    <string name="creator_message">Created by <a href="https://steemit.com/@dominico2000">@dominico2000</a></string>
 
 
 </resources>

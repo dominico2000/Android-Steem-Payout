@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import kotlin.collections.ArrayList
 import android.net.ConnectivityManager
 import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.Intent
 import android.net.NetworkInfo
 
 
@@ -65,10 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         //accounts_view.visibility = View.GONE
         accounts_view.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-
-
-        //items.add(Accounts(0,"@dominico2000",971442780, 30.02.toFloat(), 15.0.toFloat()))
-        //items.add(Accounts(0,"@foxsil",1518426549, 20.6.toFloat(), 3.0.toFloat()))
+        
 
         val adapter = AccountsViewAdapter(this, items,  accounts_view, db)
         accounts_view.adapter = adapter
@@ -98,9 +96,12 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.action_about -> {
+                startActivity( Intent(this, AboutActivity::class.java) )
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 
