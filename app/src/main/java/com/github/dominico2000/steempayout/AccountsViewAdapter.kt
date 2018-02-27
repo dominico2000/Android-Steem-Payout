@@ -78,13 +78,13 @@ class AccountsViewAdapter( private val context: Context, private val list: Array
         fun bindItems(data: Accounts) {
             val mNameText: TextView = itemView.findViewById(R.id.name_text)
             val mSbdText: TextView = itemView.findViewById(R.id.sbd_value)
-            val mSpText: TextView = itemView.findViewById(R.id.sp_value)
+            //val mSpText: TextView = itemView.findViewById(R.id.sp_value)
             val mLastSyncDateText: TextView = itemView.findViewById(R.id.last_sync_date_text)
             val mRewardTypeText: TextView = itemView.findViewById(R.id.reward_type_text)
 
             mNameText.text = data.name
             mSbdText.text = ("%.2f").format(data.SBD) + " SBD"
-            mSpText.text = ("%.2f").format(data.SP) + " SP"
+            //mSpText.text = ("%.2f").format(data.SP) + " SP"
 
             var lastSyncData: Date = Date(data.timestamp * 1000L)
             mLastSyncDateText.text = SimpleDateFormat("dd-MM-yyyy HH:mm").format(lastSyncData).toString()

@@ -53,7 +53,7 @@
                     android:layout_width="239dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="@string/last_7_days_potential_posts_payout" />
+                    android:text="@string/unrewarded_posts_potential_payout" />
 
                 <TextView
                     android:id="@+id/reward_type_text"
@@ -87,7 +87,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp">
@@ -106,7 +106,7 @@
                     android:textAlignment="center" />
 
 
-            </LinearLayout>
+            </LinearLayout>-->
 
             <TextView
                 android:id="@+id/last_sync_date_text"

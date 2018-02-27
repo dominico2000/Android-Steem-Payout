@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         //accounts_view.visibility = View.GONE
         accounts_view.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        
+
 
         val adapter = AccountsViewAdapter(this, items,  accounts_view, db)
         accounts_view.adapter = adapter
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
             items[items.size - 1].id = res[res.size - 1].id
             Log.d("Db", res.toString())
 
-            var message = getString(R.string.adding_account_message) + mEditText.text
+            var message = getString(R.string.adding_account_message) + " " + mEditText.text
             snackbar(view, message)
 
             mAccountsRefresh.post(Runnable {
